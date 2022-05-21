@@ -45,6 +45,35 @@ function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 		
 		$address    = $order->get_formatted_billing_address();
 		$shipping   = $order->get_formatted_shipping_address();
+		
+		$order_status = $order->get_status();
+		$schema_status = '';
+		switch($order_status){
+			case 'pending':
+				$schema_status = 'http://schema.org/OrderPaymentDue';
+				break;
+			case 'on-hold':
+				$schema_status = 'http://schema.org/OrderProcessing';
+				break;
+			case 'processing':
+				$schema_status = 'http://schema.org/OrderProcessing';
+				break;
+			case 'completed':
+				$schema_status = 'http://schema.org/OrderInTransit';
+				break;
+			case 'cancelled':
+				$schema_status = 'http://schema.org/OrderCancelled';
+				break;
+			case 'refunded':
+				$schema_status = 'http://schema.org/OrderReturned';
+				break;
+			case 'failed':
+				$schema_status = 'http://schema.org/OrderProblem';
+				break;
+			default:
+				$schema_status = 'http://schema.org/OrderProcessing';
+				break;
+		}
 		?>
 		<script type="application/ld+json">
 		{
@@ -55,13 +84,13 @@ function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 			"name": "<?php echo get_bloginfo( 'name', 'display' ); ?>"
 		  },
 		  "orderNumber": "<?php echo wp_kses_post($order->get_order_number()); ?>",
-		  "orderStatus": "http://schema.org/OrderProcessing",
+		  "orderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
 		  "priceCurrency": "<?php echo wp_kses_post($order->get_currency()); ?>",
 		  "price": "<?php echo wp_kses_post($order->get_total()); ?>",
 		  <?php 
 		  WOEM_schema_order_items($order);
 		  ?>
-		  "orderStatus": "http://schema.org/OrderProcessing",
+		  "orderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
 		  "orderDate": "<?php echo $order->get_date_created(); ?>",
 		  "customer": {
 			"@type": "Person",
@@ -85,13 +114,17 @@ function WOEM_schema_order_items($order){
 	?>
 		"acceptedOffer": [
 	<?php
-	foreach ( $items as $item_id => $item ) :
+	$order_items = $order->get_items();
+	
+	foreach ( $order_items as $item_id => $item ) :
 		$product = $item->get_product();
 		$product_name = $item->get_name();
 		
 		if ( is_object( $product ) ) {
 			$sku           = $product->get_sku();
+			$url 		   = get_permalink( $product->get_id() );
 			$image         = $product->get_image( $image_size );
+			$price		   = $product->get_price();
 		}
 		
 		$qty = $item->get_quantity();
@@ -102,16 +135,28 @@ function WOEM_schema_order_items($order){
 			  "itemOffered": {
 				"@type": "Product",
 				"name": "<?php echo wp_kses_post( $product_name ); ?>",
-				"sku": "<?php echo wp_kses_post( ' (#' . $sku . ')' ); ?>",
-				"url": "http://www.amazon.com/Samsung-XE303C12-A01US-Chromebook-Wi-Fi-11-6-Inch/dp/B009LL9VDG/",
+				<?php
+				if ($sku!=null && $sku!=''):
+				?>
+				"sku": "<?php echo wp_kses_post( $sku ); ?>",
+				<?php
+				endif;
+				?>
+				"url": "<?php echo wp_kses_post( $url ); ?>",
 				"image": "<?php echo wp_get_attachment_url( $product->get_image_id() ); ?>"
 			  },
-			  "price": "<?php  echo wp_kses_post( $order->get_formatted_line_subtotal( $item ) ); ?>",
+			  "price": "<?php  echo wp_kses_post( $price ); ?>",
 			  "priceCurrency": "<?php echo $order->get_currency(); ?>",
-			  "eligibleQuantity": {
+		<?php
+			if ($qty!=null && $qty>0 && $qty!=''):
+			?>
+			"eligibleQuantity": {
 				"@type": "QuantitativeValue",
 				"value": "<?php esc_html( $qty ); ?>"
 			  },
+			<?php
+			endif;
+			?>
 			  "seller": {
 				"@type": "Organization",
 				"name": "<?php echo get_bloginfo( 'name', 'display' ); ?>"
