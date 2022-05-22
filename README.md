@@ -25,7 +25,7 @@ To register please fill the following form and follow the instructions: https://
 
 The schema you need to send to schema.whitelisting+sample@gmail.com is the following:
 
-    ```
+```html
 	<script type="application/ld+json">
     {
       "@context": "http://schema.org",
@@ -83,8 +83,8 @@ The schema you need to send to schema.whitelisting+sample@gmail.com is the follo
 		  "addressCountry": "ES"
       }
     }
-</script>
-	```
+	</script>
+```
     
 Remember you should change the values for actual values for your shop.
 
