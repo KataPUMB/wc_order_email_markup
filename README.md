@@ -26,7 +26,7 @@ To register please fill the following form and follow the instructions: https://
 The schema you need to send to schema.whitelisting+sample@gmail.com is the following:
 
 ```html
-	<script type="application/ld+json">
+<script type="application/ld+json">
     {
       "@context": "http://schema.org",
       "@type": "Order",
@@ -48,7 +48,7 @@ The schema you need to send to schema.whitelisting+sample@gmail.com is the follo
 			"itemOffered": {
 				"@type": "Product",
 				"name": "T-SHIRT",
-				"sku": "B3-1-2-1-1-1-1-2",
+				"sku": "65464651",
 				"url": "https://algodejaime.com/producto/camiseta-cebra-manga-larga?attribute_pa_size=3D4-5-anos",
 				"image": "https://algodejaime.com/wp-content/uploads/2021/08/algo-de-jaime-82.jpg"
 			},
@@ -83,7 +83,7 @@ The schema you need to send to schema.whitelisting+sample@gmail.com is the follo
 		  "addressCountry": "ES"
       }
     }
-	</script>
+</script>
 ```
     
 Remember you should change the values for actual values for your shop.
