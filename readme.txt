@@ -13,78 +13,17 @@ Automatcially add email markup schema.org to your order emails so it improves yo
 
 == Description ==
 
-Automatcially add email markup schema.org to your order emails. No configuration needed, completely plug and play.
+Automatcially add email markup schema.org to your order emails. No configuration needed inside wordpress, completely plug and play.
 
-This will allow your users to have a full google experience when buying in your shop and highlight the important aspects of your order as depicted in the documentation: https://developers.google.com/gmail/markup/highlights
-Also to follow their order in their account page.
-
-== Register in Google ==
-
-To start using schema-org in your emails first you need to register your organisation in google.
-
-To register please fill the following form and follow the instructions: https://docs.google.com/forms/d/e/1FAIpQLSfT5F1VJXtBjGw2mLxY2aX557ctPTsCrJpURiKJjYeVrugHBQ/viewform?pli=1&pli=1
-
-The schema you need to send to schema.whitelisting+sample@gmail.com is the following:
-
-    {
-      "@context": "http://schema.org",
-      "@type": "Order",
-      "merchant": {
-      "@type": "Organization",
-      "name": "MY ORGANIZATION NAME"
-      },
-      "orderNumber": "4557",
-      "orderStatus": "http://schema.org/OrderProcessing",
-      "priceCurrency": "EUR",
-      "price": "17.00",
-      "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": "17.00"
-      },
-      "acceptedOffer": [
-        {
-			"@type": "Offer",
-			"itemOffered": {
-				"@type": "Product",
-				"name": "T-SHIRT",
-				"sku": "B3-1-2-1-1-1-1-2",
-				"url": "https://algodejaime.com/producto/camiseta-cebra-manga-larga?attribute_pa_size=3D4-5-anos",
-				"image": "https://algodejaime.com/wp-content/uploads/2021/08/algo-de-jaime-82.jpg"
-			},
-			"price": "20.661157",
-			"priceCurrency": "EUR",
-			"eligibleQuantity": {
-				"@type": "QuantitativeValue",
-				"value": "1"
-			},
-			"seller": {
-				"@type": "Organization",
-				"name": "MY ORGANIZATION"
-			}
-        }
-      ],
-      "url": "https://algodejaime.com/mi-cuenta/ver-pedido/28117",
-      "potentialAction": {
-		  "@type": "ViewAction",
-		  "url": "https://algodejaime.com/mi-cuenta/ver-pedido/28117"
-      },
-      "orderDate": "2021-03-05T10:57:11+01:00",
-      "customer": {
-		  "@type": "Person",
-		  "name": "CLIENT-NAME"
-      },
-      "billingAddress": {
-		  "@type": "PostalAddress",
-		  "name": "CLIENT-NAME",
-		  "streetAddress": "THE STREET, 38 2ºA",
-		  "addressLocality": "Madrid",
-		  "addressRegion": "M",
-		  "addressCountry": "ES"
-      }
-    }
-Remember you should change the values for actual values for your shop.
+This will allow your users to have a full google experience when buying in your shop and highlight the important aspects of your order as well as following the order in their account page.
 
 If you want to know more about schema.org markup for emails please visit: https://developers.google.com/gmail/markup
+
+== REGISTER IN GOOGLE ==
+To start using schema-org in your emails first you need to register your organisation in google, for more information read the following documentation: https://developers.google.com/gmail/markup/registering-with-google
+
+You also have a full step by step tutorial on how to register here: https://github.com/KataPUMB/wc_order_email_markup
+
 
 == Changelog ==
 
