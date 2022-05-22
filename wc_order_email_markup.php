@@ -94,10 +94,10 @@ function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 		  <?php 
 		  WOEM_schema_order_items($order);
 		  ?>
-		  "url": "<?php echo get_home_url(); ?>",
+		  "url": "<?php echo wc_get_endpoint_url( 'view-order', $order->get_id(), get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>",
 		  "potentialAction": {
 			"@type": "ViewAction",
-			"url": "<?php echo get_home_url(); ?>"
+			"url": "<?php echo wc_get_endpoint_url( 'view-order', $order->get_id(), get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>"
 		  },
 		  "OrderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
 		  "orderDate": "<?php echo $order->get_date_created(); ?>",
