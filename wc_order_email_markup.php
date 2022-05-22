@@ -1,11 +1,11 @@
 <?php
 /**
-Plugin Name: WooCommerce Order Email Markup
-Plugin URI: http://wordpress.org/plugins/wc-order-email-markup
+Plugin Name: Order Email Markup for Woocommerce
+Plugin URI: http://wordpress.org/plugins/Order-Email-Markup-for-Woocommerce
 Description: Automatcially add email markup <a href="https://schema.org" target="_blank">schema.org</a> to your order emails so it improves your relation with your client and build trust for your website. Self evident but WooCommerce is required.
 Author: Juan Martínez Alonso
 Version: 1.0.0
-Author URI: https://internaftis.com/
+Author URI: https://profiles.wordpress.org/juanmartinezalonso/
 */
 
 /*REQUIRES WOOCOMMERCE*/
@@ -37,7 +37,7 @@ function WOEM_woocommerce_unactive_error(){
 
 /*HOOK ORDER EMAIL*/
 
-add_action( 'woocommerce_email_before_order_table', 'WOEM_schema_generator', 20, 4 );
+add_action( 'woocommerce_email_before_order_table', 'WOEM_schema_generator', 10, 4 );
 
 function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 	if ( $email->id == 'customer_processing_order' || $email->id == 'customer_completed_order' || $email->id == 'customer_invoice' || $email->id == 'new_order' ){
@@ -87,10 +87,19 @@ function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 		  "orderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
 		  "priceCurrency": "<?php echo wp_kses_post($order->get_currency()); ?>",
 		  "price": "<?php echo wp_kses_post($order->get_total()); ?>",
+		  "priceSpecification": {
+			"@type": "PriceSpecification",
+			"price": "<?php echo wp_kses_post($order->get_total()); ?>"
+		  },
 		  <?php 
 		  WOEM_schema_order_items($order);
 		  ?>
-		  "orderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
+		  "url": "<?php echo get_home_url(); ?>",
+		  "potentialAction": {
+			"@type": "ViewAction",
+			"url": "<?php echo get_home_url(); ?>"
+		  },
+		  "OrderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
 		  "orderDate": "<?php echo $order->get_date_created(); ?>",
 		  "customer": {
 			"@type": "Person",
@@ -115,6 +124,8 @@ function WOEM_schema_order_items($order){
 		"acceptedOffer": [
 	<?php
 	$order_items = $order->get_items();
+	$numItems = count($order_items);
+	$i = 0;
 	
 	foreach ( $order_items as $item_id => $item ) :
 		$product = $item->get_product();
@@ -149,10 +160,18 @@ function WOEM_schema_order_items($order){
 			  "priceCurrency": "<?php echo $order->get_currency(); ?>",
 		<?php
 			if ($qty!=null && $qty>0 && $qty!=''):
+			
 			?>
 			"eligibleQuantity": {
 				"@type": "QuantitativeValue",
-				"value": "<?php esc_html( $qty ); ?>"
+				"value": "<?php echo wp_kses_post( $qty ); ?>"
+			  },
+			<?php
+			else:
+			?>
+			"eligibleQuantity": {
+				"@type": "QuantitativeValue",
+				"value": "1"
 			  },
 			<?php
 			endif;
@@ -161,8 +180,16 @@ function WOEM_schema_order_items($order){
 				"@type": "Organization",
 				"name": "<?php echo get_bloginfo( 'name', 'display' ); ?>"
 			  }
-			},
 		<?php
+		  if(++$i === $numItems) {
+			?>
+			}
+			<?php
+		  }else{
+			?>
+			},
+			<?php
+		  }
 	endforeach;
 	?>
 		],
