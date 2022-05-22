@@ -79,18 +79,14 @@ function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 		{
 		  "@context": "http://schema.org",
 		  "@type": "Order",
-		  "merchant": {
-			"@type": "Organization",
+		  "broker": {
+			"@type": "LocalBusiness",
 			"name": "<?php echo get_bloginfo( 'name', 'display' ); ?>"
 		  },
 		  "orderNumber": "<?php echo wp_kses_post($order->get_order_number()); ?>",
-		  "orderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
-		  "priceCurrency": "<?php echo wp_kses_post($order->get_currency()); ?>",
-		  "price": "<?php echo wp_kses_post($order->get_total()); ?>",
-		  "priceSpecification": {
-			"@type": "PriceSpecification",
-			"price": "<?php echo wp_kses_post($order->get_total()); ?>"
-		  },
+		  "OrderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
+		  "orderDate": "<?php echo $order->get_date_created(); ?>",
+		  "paymentStatus": "https://schema.org/PaymentComplete",
 		  <?php 
 		  WOEM_schema_order_items($order);
 		  ?>
@@ -99,8 +95,6 @@ function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 			"@type": "ViewAction",
 			"url": "<?php echo wc_get_endpoint_url( 'view-order', $order->get_id(), get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>"
 		  },
-		  "OrderStatus": "<?php echo wp_kses_post( $schema_status ); ?>",
-		  "orderDate": "<?php echo $order->get_date_created(); ?>",
 		  "customer": {
 			"@type": "Person",
 			"name": "<?php echo wp_kses_post($order->get_billing_first_name());?>"
@@ -121,7 +115,7 @@ function WOEM_schema_generator($order, $sent_to_admin, $plain_text, $email ){
 
 function WOEM_schema_order_items($order){
 	?>
-		"acceptedOffer": [
+		"orderedItem": [
 	<?php
 	$order_items = $order->get_items();
 	$numItems = count($order_items);
@@ -142,8 +136,9 @@ function WOEM_schema_order_items($order){
 		
 		?>
 			{
-			  "@type": "Offer",
-			  "itemOffered": {
+			  "@type": "OrderItem",
+			  "orderQuantity": "<?php echo wp_kses_post( $qty ); ?>",
+			  "orderedItem": {
 				"@type": "Product",
 				"name": "<?php echo wp_kses_post( $product_name ); ?>",
 				<?php
@@ -158,26 +153,8 @@ function WOEM_schema_order_items($order){
 			  },
 			  "price": "<?php  echo wp_kses_post( $price ); ?>",
 			  "priceCurrency": "<?php echo $order->get_currency(); ?>",
-		<?php
-			if ($qty!=null && $qty>0 && $qty!=''):
-			
-			?>
-			"eligibleQuantity": {
-				"@type": "QuantitativeValue",
-				"value": "<?php echo wp_kses_post( $qty ); ?>"
-			  },
-			<?php
-			else:
-			?>
-			"eligibleQuantity": {
-				"@type": "QuantitativeValue",
-				"value": "1"
-			  },
-			<?php
-			endif;
-			?>
 			  "seller": {
-				"@type": "Organization",
+				"@type": "LocalBusiness",
 				"name": "<?php echo get_bloginfo( 'name', 'display' ); ?>"
 			  }
 		<?php
