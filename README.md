@@ -23,70 +23,7 @@ To start using schema-org in your emails first you need to register your organis
 
 To register please fill the following form and follow the instructions: https://docs.google.com/forms/d/e/1FAIpQLSfT5F1VJXtBjGw2mLxY2aX557ctPTsCrJpURiKJjYeVrugHBQ/viewform?pli=1&pli=1
 
-The schema you need to send to schema.whitelisting+sample@gmail.com is the following:
-
-```html
-<script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "Order",
-      "merchant": {
-      "@type": "Organization",
-      "name": "MY ORGANIZATION NAME"
-      },
-      "orderNumber": "4557",
-      "orderStatus": "http://schema.org/OrderProcessing",
-      "priceCurrency": "EUR",
-      "price": "17.00",
-      "priceSpecification": {
-      "@type": "PriceSpecification",
-      "price": "17.00"
-      },
-      "acceptedOffer": [
-        {
-			"@type": "Offer",
-			"itemOffered": {
-				"@type": "Product",
-				"name": "T-SHIRT",
-				"sku": "65464651",
-				"url": "https://algodejaime.com/producto/camiseta-cebra-manga-larga?attribute_pa_size=3D4-5-anos",
-				"image": "https://algodejaime.com/wp-content/uploads/2021/08/algo-de-jaime-82.jpg"
-			},
-			"price": "20.661157",
-			"priceCurrency": "EUR",
-			"eligibleQuantity": {
-				"@type": "QuantitativeValue",
-				"value": "1"
-			},
-			"seller": {
-				"@type": "Organization",
-				"name": "MY ORGANIZATION"
-			}
-        }
-      ],
-      "url": "https://algodejaime.com/mi-cuenta/ver-pedido/28117",
-      "potentialAction": {
-		  "@type": "ViewAction",
-		  "url": "https://algodejaime.com/mi-cuenta/ver-pedido/28117"
-      },
-      "orderDate": "2021-03-05T10:57:11+01:00",
-      "customer": {
-		  "@type": "Person",
-		  "name": "CLIENT-NAME"
-      },
-      "billingAddress": {
-		  "@type": "PostalAddress",
-		  "name": "CLIENT-NAME",
-		  "streetAddress": "THE STREET, 38 2ºA",
-		  "addressLocality": "Madrid",
-		  "addressRegion": "M",
-		  "addressCountry": "ES"
-      }
-    }
-</script>
-```
-    
-Remember you should change the values for actual values for your shop.
+For verification email I created a new order which its email is schema.whitelisting+sample@gmail.com
 
 If you want to know more about schema.org markup for emails please visit: https://developers.google.com/gmail/markup
 
