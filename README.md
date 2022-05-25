@@ -23,7 +23,7 @@ To start using schema-org in your emails first you need to register your organis
 
 To register please fill the following form and follow the instructions: https://docs.google.com/forms/d/e/1FAIpQLSfT5F1VJXtBjGw2mLxY2aX557ctPTsCrJpURiKJjYeVrugHBQ/viewform?pli=1&pli=1
 
-For verification email I created a new order which its email is schema.whitelisting+sample@gmail.com
+For verification email I created a new order which its email is schema.whitelisting+sample@gmail.com and sent a simple confirmation email through woocommerce
 
 If you want to know more about schema.org markup for emails please visit: https://developers.google.com/gmail/markup
 
